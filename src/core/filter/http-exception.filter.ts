@@ -1,3 +1,6 @@
+/**
+ * 过滤器实现，用来过滤
+ */
 import {ArgumentsHost,Catch, ExceptionFilter, HttpException} from '@nestjs/common';
 
 @Catch(HttpException)

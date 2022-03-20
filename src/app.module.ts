@@ -8,15 +8,16 @@ import { PostsEntity } from './posts/posts.entity';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService, ConfigModule } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 // 开发环境配置
 import envConfig from '../config/env';
 
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ 
+    ConfigModule.forRoot({
       isGlobal: true,  // 设置为全局
-      envFilePath: [envConfig.path] 
+      envFilePath: [envConfig.path]
      }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -29,11 +30,13 @@ import envConfig from '../config/env';
         password: configService.get('DB_PASSWORD', 'a144005'), // 密码
         database: configService.get('DB_DATABASE', 'blog'), //数据库名
         timezone: '+08:00', //服务器上配置的时区
-        synchronize: true, //根据实体自动创建数据库表， 生产环境建议关闭
+        // 不关闭，实体类型强替换，就会删表，清空数据
+        synchronize: true, //根据实体 自动创建 数据库表， 生产环境建议关闭
         autoLoadEntities: true // 自动加载数据库实体，就不需要自己每次都导入
       }),
     }),
     PostsModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
